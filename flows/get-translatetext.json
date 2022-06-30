@@ -1,0 +1,117 @@
+{
+	"schemaVersion": "4",
+	"info": {
+		"name": "get-translatetext"
+	},
+	"parameter": {
+		"properties": {
+			"request": {
+				"description": "The request"
+			},
+			"config": {
+				"type": "object",
+				"description": "The service's configuration"
+			},
+			"env": {
+				"type": "object",
+				"description": "The host OS environment"
+			}
+		},
+		"additionalProperties": false
+	},
+	"start": "translatetext.1",
+	"nodes": {
+		"http.1": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Set HTTP Response (Success)",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"type": "number",
+					"value": "200",
+					"metaName": "Status",
+					"metaDescription": "The HTTP status code"
+				},
+				{
+					"name": "body",
+					"type": "jsonpath",
+					"value": "$.translateResult",
+					"metaName": "Body",
+					"metaDescription": "The response payload"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response",
+					"routes": [],
+					"metaName": "Next"
+				}
+			},
+			"metaMethod": "Set HTTP Response"
+		},
+		"translatetext.1": {
+			"type": "nodehandler://api-builder-plugin-translatetext/translatetext",
+			"name": "Translate Text",
+			"method": "translateText",
+			"parameters": [
+				{
+					"name": "TargetLanguageCode",
+					"type": "jsonpath",
+					"value": "$.request.query.TargetLanguageCode",
+					"metaName": "Target Language Code",
+					"metaDescription": "The language code requested for the language of the target text. The language must be a language supported by Amazon Translate (https://docs.aws.amazon.com/translate/latest/dg/what-is.html#what-is-languages)."
+				},
+				{
+					"name": "Text",
+					"type": "jsonpath",
+					"value": "$.request.query.Text",
+					"metaName": "Text",
+					"metaDescription": "The text to translate. The text string can be a maximum of 5,000 bytes long. Depending on your character set, this may be fewer than 5,000 characters."
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.translateResult",
+					"routes": [
+						"http.1"
+					],
+					"metaName": "Next"
+				},
+				"error": {
+					"context": "$.translateError",
+					"routes": [
+						"http.2"
+					],
+					"metaName": "Error"
+				}
+			},
+			"metaMethod": "Translate Text"
+		},
+		"http.2": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Set HTTP Response (Error)",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"type": "number",
+					"value": "400"
+				},
+				{
+					"name": "body",
+					"type": "jsonpath",
+					"value": "$.translateError"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response",
+					"routes": [],
+					"metaName": "Next"
+				}
+			},
+			"metaMethod": "Set HTTP Response"
+		}
+	}
+}

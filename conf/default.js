@@ -22,7 +22,8 @@ module.exports = {
 	// default configuration.
 
 	// API key
-	apikey: 'TQPcX1wyyDQPbGVOK23SOVqJFwRdtla0',
+	// apikey: 'TQPcX1wyyDQPbGVOK23SOVqJFwRdtla0',
+  apikey: process.env.API_KEY,
 
 	// This is the base url the service will be reachable at not including the
 	// port
@@ -116,7 +117,7 @@ module.exports = {
 	// without authentication, then you can explicitly add them to `public`
 	// paths.
 	accessControl: {
-		apiPrefixSecurity: 'basic', // none | basic | apikey | ldap | plugin
+		apiPrefixSecurity: 'apikey', // none | basic | apikey | ldap | plugin
 		public: []
 	},
 

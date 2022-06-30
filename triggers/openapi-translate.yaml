@@ -1,0 +1,12 @@
+triggers:
+  openapi-translate-1:
+    name: get-translatetext
+    parameters:
+      method: get-translatetext
+    enabled: true
+    invoke:
+      flow: get-translatetext
+      parameters:
+        request: $.request
+        config: $.config
+        env: $.env

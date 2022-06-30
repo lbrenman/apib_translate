@@ -1,0 +1,183 @@
+{
+  "openapi": "3.0.0",
+  "x-stoplight": {
+    "id": "jz5lz09h0jkh2"
+  },
+  "info": {
+    "title": "Translate",
+    "version": "1.0",
+    "description": "Translate text between two languages",
+    "contact": {
+      "name": "Leor Brenman",
+      "email": "lbrenman99@hotmail.com",
+      "url": "http://www.leorbrenman.com"
+    },
+    "license": {
+      "name": "NA",
+      "url": "http://www.leorbrenman.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/api",
+      "description": "localhost"
+    }
+  ],
+  "paths": {
+    "/translatetext": {
+      "get": {
+        "summary": "Translate Text",
+        "tags": [
+          "translate"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessReponse"
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "TranslatedText": "こんにちは",
+                      "SourceLanguageCode": "en",
+                      "TargetLanguageCode": "ja"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "message": "Unsupported language pair: en to zz. Target language 'zz' is not supported",
+                      "code": "UnsupportedLanguagePairException",
+                      "time": "2022-06-30T19:06:40.272Z",
+                      "requestId": "81926238-2f36-46cc-afc5-953ea1fd1f13",
+                      "statusCode": 400,
+                      "retryable": false,
+                      "retryDelay": 99.47665462298107
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-translatetext",
+        "description": "Translate text. Supported languages can be found here: https://docs.aws.amazon.com/translate/latest/dg/what-is-languages.html",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "TargetLanguageCode",
+            "description": "Language code for desired translation",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "Text",
+            "description": "Text to translate",
+            "required": true
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "message": "Unsupported language pair: en to zz. Target language 'zz' is not supported",
+            "code": "UnsupportedLanguagePairException",
+            "time": "2022-06-30T19:06:40.272Z",
+            "requestId": "81926238-2f36-46cc-afc5-953ea1fd1f13",
+            "statusCode": 400,
+            "retryable": false,
+            "retryDelay": 99.47665462298107
+          }
+        },
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "requestId": {
+            "type": "string"
+          },
+          "statusCode": {
+            "type": "integer"
+          },
+          "retryable": {
+            "type": "boolean"
+          },
+          "retryDelay": {
+            "type": "number"
+          }
+        }
+      },
+      "SuccessReponse": {
+        "type": "object",
+        "properties": {
+          "SourceLanguageCode": {
+            "type": "string"
+          },
+          "TargetLanguageCode": {
+            "type": "string"
+          },
+          "TranslatedText": {
+            "type": "string"
+          }
+        },
+        "x-examples": {
+          "example-1": {
+            "SourceLanguageCode": "string",
+            "TargetLanguageCode": "string",
+            "TranslatedText": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "apiKey": {
+        "name": "API Key",
+        "type": "apiKey",
+        "in": "header"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "translate",
+      "description": "translate"
+    }
+  ],
+  "security": [
+    {
+      "apiKey": []
+    }
+  ]
+}
