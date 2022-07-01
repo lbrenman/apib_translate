@@ -6,7 +6,7 @@
   "info": {
     "title": "Translate",
     "version": "1.0",
-    "description": "Translate text between two languages",
+    "description": "Translate text",
     "contact": {
       "name": "Leor Brenman",
       "email": "lbrenman99@hotmail.com",
@@ -75,7 +75,7 @@
           }
         },
         "operationId": "get-translatetext",
-        "description": "Translate text. Supported languages can be found here: https://docs.aws.amazon.com/translate/latest/dg/what-is-languages.html",
+        "description": "Translate text. Language of source text is automatically detected. Supported languages can be found here: https://docs.aws.amazon.com/translate/latest/dg/what-is-languages.html",
         "parameters": [
           {
             "schema": {
@@ -162,8 +162,8 @@
       }
     },
     "securitySchemes": {
-      "apiKey": {
-        "name": "API Key",
+      "API Key": {
+        "name": "apiKey",
         "type": "apiKey",
         "in": "header"
       }
@@ -177,7 +177,7 @@
   ],
   "security": [
     {
-      "apiKey": []
+      "API Key": []
     }
   ]
 }
